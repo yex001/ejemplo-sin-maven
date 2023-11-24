@@ -9,8 +9,6 @@ pipeline {
                 script {
                     echo 'Checking Environment Variables...'
                     echo "PATH: ${env.PATH}"
-                    echo "M2_HOME: ${env.M2_HOME}"
-                    echo "MAVEN_HOME: ${env.MAVEN_HOME}"
                     echo "JAVA_HOME: ${env.JAVA_HOME}"
                     echo "SONARQUBE_SCANNER_HOME: ${env.SONARQUBE_SCANNER_HOME}"
                 }
@@ -20,8 +18,7 @@ pipeline {
             steps {
                 script {
                     withSonarQubeEnv('SonarQube_server') {
-                        // Reemplace 'nohup' con 'call' para hacerlo compatible con Windows
-                        bat 'call mvn clean package sonar:sonar'
+                        bat "sonar-scanner -Dsonar.projectKey=app -Dsonar.sources=src -Dsonar.java.binaries=."
                     }
                 }
             }
